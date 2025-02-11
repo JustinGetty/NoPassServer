@@ -1,7 +1,6 @@
 #ifndef  DATABASEQ_H
 #define DATABASEQ_H
 
-#include <sqlite3.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/socket.h>

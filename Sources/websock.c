@@ -144,6 +144,9 @@ static int callback_signin_auth(struct lws *wsi, enum lws_callback_reasons reaso
 
 }
 
+//callback function should create net thread for each connection, would bottleneck if not
+//needs AT LEAST same # of threads as DB daemon
+
 static struct lws_protocols protocols[] = {
     {
         "echo-protocol",
