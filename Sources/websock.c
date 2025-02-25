@@ -3,6 +3,9 @@
 #include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <fcntl.h>    
+#include <unistd.h>  
+#include <sys/stat.h> 
 
 /*
 TODO:
@@ -105,7 +108,7 @@ static int callback_echo(struct lws *wsi,
 
 void *signin_auth_thread(void *arg) 
 {
-	struct client_signin_data *data (struct client_signin_data *)arg;
+	struct client_signin_data *data = (struct client_signin_data *)arg;
 	printf("Thread spawned");
 	//CALL DB OBJ
 	//go sign in the user
@@ -121,8 +124,8 @@ static int callback_signin_auth(struct lws *wsi, enum lws_callback_reasons reaso
 			break;
 
 		case LWS_CALLBACK_RECEIVE: {
-			lwsl_user("Username Received: %s\n", (char *)in);
-			printf("Username Received: %s\n", (char *)in);
+			lwsl_user("Username Received: %s\n", (char *)rec_data);
+			printf("Username Received: %s\n", (char *)rec_data);
 
 			//parse request fields (i.e name, email, etc.)
 
@@ -130,6 +133,10 @@ static int callback_signin_auth(struct lws *wsi, enum lws_callback_reasons reaso
 			//here make request to phone verify
 			//set this to wait and make a new thread to instantiate the db conn OBJ
 			
+            unsigned char buf [LWS_PRE + 1024];
+            size_t n = len < 1024 ? len : 1024;
+			//skip LWS_PRE bytes and copy revieved data into buffer
+            memcpy(&buf[LWS_PRE], rec_data, n);
 
 			//send back requested data in JSON
 			int m = lws_write(wsi, &buf[LWS_PRE], n, LWS_WRITE_TEXT);
@@ -141,10 +148,10 @@ static int callback_signin_auth(struct lws *wsi, enum lws_callback_reasons reaso
 			break;
 		}
 
-
+	}
 }
 
-//callback function should create net thread for each connection, would bottleneck if not
+//callback function should create new thread for each connection, would bottleneck if not
 //needs AT LEAST same # of threads as DB daemon
 
 static struct lws_protocols protocols[] = {
@@ -157,12 +164,6 @@ static struct lws_protocols protocols[] = {
 	{
 		"signin-auth-protocol",
 		callback_signin_auth,
-		0,
-		1024,
-	},
-	{
-		"signup-auth-protocol",
-		callback_signup_auth,
 		0,
 		1024,
 	},
@@ -188,8 +189,8 @@ int main(void)
     info.options = LWS_SERVER_OPTION_DO_SSL_GLOBAL_INIT;
 	info.fd_limit_per_thread = 1024;
     
-    info.ssl_cert_filepath = "/infinite/Projects/NoPass/Server/certs/server-cert.pem";
-    info.ssl_private_key_filepath = "/infinite/Projects/NoPass/Server/certs/server-key.pem";
+    //info.ssl_cert_filepath = "/infinite/Projects/NoPass/Server/certs/server-cert.pem";
+    //info.ssl_private_key_filepath = "/infinite/Projects/NoPass/Server/certs/server-key.pem";
    
    //add back in prod IMPORTANT	
  //   info.ssl_ca_filepath = "/etc/ssl/certs/ca-certificates.crt";

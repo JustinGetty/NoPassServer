@@ -7,7 +7,8 @@
 #include <sys/un.h>
 #include <unistd.h>
 
-#define SOCKET_PATH "/tmp/sqlite_daemon.sock"
+#define GET_SOCKET_PATH "/tmp/sqlite_GET_daemon.sock"
+#define POST_SOCKET_PATH "/tmp/sqlite_POST_daemon.sock"
 
 typedef struct datastruct
 {
@@ -19,6 +20,8 @@ int insertByUserRowVals(int argc, char* username, char** argr, char** argv);
 
 datastruct getByUserRowsVals(int argc, char* username, char** argr);
 
-void send_query(const char* query);
+void send_get_query(const char* query);
+
+void send_post_query(const char* query);
 
 #endif

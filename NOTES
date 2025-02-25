@@ -1,0 +1,6 @@
+
+Websocket:
+- Connect: wscat -c wss://192.168.1.213:8443 --no-check -s echo-protocol
+
+SQLite Daemon:
+- build to /usr/local/bin/ eventually
