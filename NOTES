@@ -4,3 +4,6 @@ Websocket:
 
 SQLite Daemon:
 - build to /usr/local/bin/ eventually
+
+CPP websocket:
+- g++ -I/infinite/Projects/NoPass/SourceFiles/uWebSockets/src     -I/infinite/Projects/NoPass/SourceFiles/uWebSockets/uSockets/src     Sources/websocket_v2.cpp     /infinite/Projects/NoPass/SourceFiles/uWebSockets/uSockets/uSockets.a     -lz -o testwebsock

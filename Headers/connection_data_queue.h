@@ -1,0 +1,52 @@
+#ifndef CONNECTION_DATA_QUEUE_H
+#define CONNECTION_DATA_QUEUE_H
+
+#include <iostream>
+#include <App.h>
+#include <mutex>
+
+#define MAX_CONNECTIONS 20
+
+#define SUCC_ENQUEUE "Data inserted successfully!\n"
+#define SUCC_DEQUEUE "Data dequeued successfully!\n"
+
+#define FULL_QUEUE_ERR "ERROR: Queue is full!\n"
+#define EMPTY_QUEUE_ERR "ERROR: Queue is empty!\n"
+
+#define FULL_QUEUE_ERR_CODE -3
+#define GOOD_ENQUEUE_ERR_CODE 0
+#define BAD_QUEUE_INIT_ERR_CODE -1
+#define GOOD_QUEUE_INIT_ERR_CODE 0
+
+typedef struct
+{
+	std::string username;
+	int connection_id;
+	uWS::WebSocket<false, true, int> *ws;
+} ConnectionData;
+
+typedef struct
+{
+	ConnectionData *connections[MAX_CONNECTIONS];
+	int front;
+	int size;
+} Queue;
+
+class ConnectionQueue
+{
+private:
+	Queue connections;
+	std::mutex conn_mutex;
+
+public:
+	ConnectionQueue();
+	int init_queue();
+	void destroy_queue();
+	bool isFull();
+	bool isEmpty();
+	int enqueue(ConnectionData *insert_data);
+	ConnectionData dequeue();
+	ConnectionData getFront();
+};
+
+#endif
