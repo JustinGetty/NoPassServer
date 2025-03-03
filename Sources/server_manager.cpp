@@ -13,6 +13,13 @@
  - set fs.file-max for max open files
  - thread pool to handle connections
 
+ Avoid Threads Plan:
+ - Client site to websocket connection, connection managed by uWebSockets
+ - Websocket data stored, request to data daemon made and websock to phone made via uWebSocket
+ - Keep both ws connections in data structure, note not signed in yet, unique id.
+ - When user approves, update data structure to "ready to approve", send approval to client site
+ - No threads
+
  */
 
 struct WebSocketBehavior
