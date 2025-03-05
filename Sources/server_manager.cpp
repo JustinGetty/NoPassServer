@@ -20,6 +20,23 @@
  - When user approves, update data structure to "ready to approve", send approval to client site
  - No threads
 
+
+ To be figured out:
+ - How to notify connection in structure that it's ready to be sent out?
+    Connection sits in structure with websocket connections for both mobile and client site.
+    When user approves on mobile, mobile conn manager daemon will need to update that connection.
+    Possibly override/make new WebSocketBehavior for uWebSocket
+
+    Solution:
+    - Second queue that when the approval is finished, its added to a new queue that can be sent through
+        event loop
+
+
+    - nvm, API POST request to server after push notification to phone
+New solution:
+- ConnectionDataList stores connections while waiting for mobile verification. then mobile phone sends https POST request
+    with the data and then the corresponding connection data is pulled from the list
+
  */
 
 struct WebSocketBehavior
