@@ -4,6 +4,7 @@
 #include <iostream>
 #include <App.h>
 #include <mutex>
+#include "custom_data.h"
 
 #define MAX_CONNECTIONS 20
 
@@ -17,13 +18,6 @@
 #define GOOD_ENQUEUE_ERR_CODE 0
 #define BAD_QUEUE_INIT_ERR_CODE -1
 #define GOOD_QUEUE_INIT_ERR_CODE 0
-
-typedef struct
-{
-	std::string username;
-	int connection_id;
-	uWS::WebSocket<false, true, int> *ws;
-} ConnectionData;
 
 typedef struct
 {

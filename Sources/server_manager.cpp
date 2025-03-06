@@ -1,6 +1,7 @@
 #include <App.h>
 #include <iostream>
-#include "/infinite/Projects/NoPass/Server/NoPassServer/Headers/connection_data_queue.h"
+#include "../Headers/connection_data_queue.h"
+#include "../Headers/conn_data_storage.h"
 
 #define EMPTY_USERNAME "NOTSET"
 
@@ -39,6 +40,11 @@ New solution:
 
  */
 
+void main_thread_work()
+{
+    // grab connection here
+}
+
 struct WebSocketBehavior
 {
     static void open(uWS::WebSocket<false, true, int> *ws)
@@ -57,6 +63,7 @@ struct WebSocketBehavior
     {
         std::cout << "Received: " << message << std::endl;
         ws->send(message, opCode);
+        // if message recieved == sign in, add to threadpool queue
     }
 
     static void close(uWS::WebSocket<false, true, int> *ws, int code, std::string_view message)

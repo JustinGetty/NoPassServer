@@ -16,6 +16,9 @@ private:
     bool stop_ = false;
 
 public:
+    ConnThreadPool();
+    ~ConnThreadPool();
+    void enqueue_thread
 };
 
 #endif
