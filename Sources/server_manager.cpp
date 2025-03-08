@@ -1,7 +1,9 @@
 #include <App.h>
 #include <iostream>
-#include "../Headers/connection_data_queue.h"
-#include "../Headers/conn_data_storage.h"
+#include "Headers/connection_data_queue.h"
+#include "Headers/conn_data_storage.h"
+#include "Headers/conn_thread_pool.h"
+#include "Headers/custom_data.h"
 
 #define EMPTY_USERNAME "NOTSET"
 
@@ -64,6 +66,10 @@ struct WebSocketBehavior
         std::cout << "Received: " << message << std::endl;
         ws->send(message, opCode);
         // if message recieved == sign in, add to threadpool queue
+        /*
+        threadPool.enqueueConnection(createConnectionData(i));
+        std::cout << "Enqueued connection data " << i << std::endl;
+        */
     }
 
     static void close(uWS::WebSocket<false, true, int> *ws, int code, std::string_view message)
@@ -75,6 +81,13 @@ struct WebSocketBehavior
 int main()
 {
     uWS::App app;
+
+    /*
+    create thread pool to do the work for each connection
+    i.e get data, handle data, etc.
+    */
+    ConnThreadPool connection_work_thread_pool;
+    std::this_thread::sleep_for(std::chrono::milliseconds(500));
 
     // Attach WebSocket route
     // equivalant to app.open = XX, app.close = XX

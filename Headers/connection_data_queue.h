@@ -41,7 +41,11 @@ public:
 	int enqueue(ConnectionData *insert_data);
 	ConnectionData dequeue();
 	ConnectionData getFront();
-	void main_server_management();
+
+	void main_server_management(bool &stop_flag);
 };
+
+// Dummy processing function; replace with your own logic.
+void processConnectionData(ConnectionData data);
 
 #endif
