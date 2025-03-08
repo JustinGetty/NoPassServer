@@ -41,6 +41,7 @@ public:
 	int enqueue(ConnectionData *insert_data);
 	ConnectionData dequeue();
 	ConnectionData getFront();
+	void main_server_management();
 };
 
 #endif
